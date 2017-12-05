@@ -1,0 +1,3 @@
+﻿  Closest Pair.cpp
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Algorithm Analysis Term Project.vcxproj -> C:\Users\Tucker\Documents\GitHub\Closest-Pair-Algorithm-Analysis\Algorithm Analysis Term Project\Debug\Algorithm Analysis Term Project.exe
