@@ -1,5 +1,9 @@
 ﻿  Closest Pair.cpp
 c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(37): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(85): warning C4244: '=': conversion from '__int64' to 'double', possible loss of data
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(226): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(86): warning C4244: '=': conversion from '__int64' to 'double', possible loss of data
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(310): warning C4018: '<': signed/unsigned mismatch
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(292): warning C4101: 'distanceMiddle': unreferenced local variable
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(293): warning C4101: 'minimumDistance': unreferenced local variable
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(338): warning C4018: '<': signed/unsigned mismatch
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(340): warning C4018: '<': signed/unsigned mismatch
   Algorithm Analysis Term Project.vcxproj -> C:\Users\Tucker\Documents\GitHub\Closest-Pair-Algorithm-Analysis\Algorithm Analysis Term Project\Debug\Algorithm Analysis Term Project.exe

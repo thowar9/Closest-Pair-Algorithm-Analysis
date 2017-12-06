@@ -9,14 +9,14 @@
 
 //to increase heap size
 #pragma comment(linker, "/HEAP:4000000") 
-#pragma comment(linker, "/STACK:4000000")
+#pragma comment(linker, "/STACK:6000000")
 
 using namespace std; 
 
 double dist(pair<int, int>, pair<int, int>); 
-int compareX(const void*, const void*); 
-int compareY(const void*, const void*); 
-double divideAndConquer(vector <pair<int, int> >, vector <pair<int, int>>, int); 
+//double divideAndConquer(vector <pair<int, int> >, vector <pair<int, int>>, int); 
+double recursiveClosest(vector<pair<int, int>>, vector<pair<int, int>>); 
+double bruteForceUtility(vector<pair<int, int>>); 
 double findMin(double, double); 
 double closestInArea(vector <pair<int, int>>, double, int);
 bool sortbysec(const pair<int, int> &, const pair<int, int> &);
@@ -39,7 +39,7 @@ int main()
 	vector < pair<int, int> > data;
 	pair<int, int> BFdata[MAXINPUT]; 
 
-	double minimumDistance = sqrt(2 * pow(PLANESIZE,2)); //to hold minimum distance 
+	double minimumDistance = sqrt(2 * pow(PLANESIZE,2)); //to hold minimum distance for brute force 
 
 	//Test file creation
 	ofstream outBruteForce;
@@ -76,9 +76,10 @@ int main()
 			}
 
 			sort (dataX.begin(), dataX.end()); 
-			sort(dataY.begin(), dataY.end(), sortbysec);
+			sort (dataY.begin(), dataY.end(), sortbysec);
 
-			divideAndConquer(dataX, dataY, n);
+			//divideAndConquer(dataX, dataY, n);
+			recursiveClosest(dataX, dataY); 
 
 			auto end = chrono::steady_clock::now();
 
@@ -89,6 +90,7 @@ int main()
 		}
 		average = (toAverage[0] + toAverage[1] + toAverage[2]) / 3.0; //avg trials
 		outDivConq << "Run: " << run << " Average: " << average << endl;
+		cout << "Run: " << run << endl; 
 
 		n = n + SKIPBY; //incriment input size
 		run++; //incriment run number 
@@ -159,19 +161,6 @@ double dist(pair<int, int> a, pair<int, int> b)
 	return sqrt((a.first - b.first)*(a.first - b.first) + (a.second - b.second)*(a.second - b.second));
 }
 
-int compareX(const void* a, const void* b)
-{	//utility for qsort
-	pair<int, int> *p1 = (pair<int, int>*)a; 
-	pair<int, int> *p2 = (pair<int, int>*)b; 
-	return (p1->first - p2->first); 
-}
-
-int compareY(const void* a, const void* b)
-{	//utility for qsort
-	pair<int, int> *p1 = (pair<int, int>*)a;
-	pair<int, int> *p2 = (pair<int, int>*)b;
-	return (p1->second - p2->second);
-}
 
 double findMin(double first, double second)
 {
@@ -198,99 +187,72 @@ double closestInArea(vector < pair<int, int> > area, double distance, int n)
 	return closestDistance; 
 }
 
-double divideAndConquer(vector < pair<int, int> >dataX, vector < pair<int, int> > dataY, int n)
-{
-	double distanceLeft = 0, distanceRight = 0, distance = 0; 
-	double PLANESIZE = 1000; //REMEMBER
-	double minimumDistance = sqrt(2 * pow(PLANESIZE, 2)); //REMEMBER //to hold minimum distance 
 
-	if (n <= 3)
-	{ //essentially brute force if there are 3 or less pairs remaining 
-		return minimumDistance; //doesnt belong here - data will be more or less accurate, though. 
-		for (int i = 0; i < n; ++i)
-		{//replaced j<=n with j<n
-			for (int j = (i + 1); j < n; ++j)
-			{
-				if (dist(dataY[i], dataY[j]) < minimumDistance)
-				{
-					//minimumDistance = dist(dataX[i], dataX[j]); //not needed for analysis but should be here for correctness
-					return minimumDistance; //doesnt belong here- replaced for simplicity. 
-				}
-			}
-		}
-		//return minimumDistance;
-
-	}
-
-	//find the midpoint
-	int middle = floor(n / 2);
-	pair<int, int> midpoint = dataX[middle]; 
-
-	//Divide dataY[] based on midpoint 
-	//Divide Y sorted pairs to left of line on middle point
-	//pair<int, int> *dataYleft = new pair<int,int> [middle + 1]; //REMEMBER TO DELETE MEMORY
-	//pair<int, int> dataYleft[MAXINPUT]; //BAD IDEA, WAY TOO MEMORY HEAVY
-	vector< pair <int, int> > dataYleft; 
-	//Divide Y sorted pairs to right of line on middle point
-	//pair<int, int> *dataYright = new pair<int, int>[n - middle - 1]; //REMEMBER TO DELETE MEMORY
-	//pair<int, int> dataYright[MAXINPUT]; //BAD IDEA, WAY TOO MEMORY HEAVY
-	vector< pair <int, int> > dataYright; 
-
-	for (int i = 0; i < n; i++)
-	{
-		if (dataY[i].first <= midpoint.first)
-		{ //if point is less than midpoint, sort to left???? REMEMBER to correct
-			dataYleft.push_back(dataY[i]); 
-		}
-		else
-		{ //if point is greater than midpoint, sort to right??? REMEMBER to correct
-			dataYright.push_back(dataY[i]);
-		}
-	}
-
-	//find shortest distance on left and right side of middle point 
-	distanceLeft = divideAndConquer(dataX, dataYleft, middle); //left side
-	//commented out "+ middle" from "dataX + middle" below
-	//commented out "- middle" from "n - middle" below
-
-	distanceRight = divideAndConquer(dataX, dataYright, n); //right side
-	distance = findMin(distanceLeft, distanceRight); 
-
-	//narrow down points closer than d to middle line into array
-	//pair<int, int> * area = new pair<int, int>[n]; //REMEMBER TO DELETE 
-	//pair<int, int> area[MAXINPUT]; //BAD IDEA, WAY TOO MEMORY HEAVY
-	vector <pair <int, int> > area; 
-	int counter = 0; 
-	for (int i = 0; i < n; i++)
-	{
-		if (abs(dataY[i].first - midpoint.first) < distance)
-		{
-			area.push_back(dataY[i]); 
-			counter++; 
-		}
-	}
-
-	//find closest points in selected area 
-	//compare new distance to previous and return minimum
-	double result = findMin(distance, closestInArea(area, distance, counter)); 
-	
-	//REMEMBER TO DELETE
-	//free memory 
-	/*
-	delete[] dataYright; 
-	dataYright = NULL; 
-	delete[] dataYleft; 
-	dataYleft = NULL; 
-	delete[] area; 
-	area = NULL; 
-	*/
-	return result; 	
-}
-
-// Driver function to sort the vector elements
-// by second element of pairs
+// utility function to sort the vector elements by second element of pairs
 bool sortbysec(const pair<int, int> &a, const pair<int, int> &b)
 {
 	return (a.second < b.second);
 }
 
+double recursiveClosest(vector <pair<int, int>> dataX, vector <pair<int, int>> dataY)
+{	//dataX is pairs sorted by X value, dataY is pairs sorted by Y value 
+	double distanceLeft; //distance between closest pair found on left on middle line
+	double distanceRight; //distance betweenclosest pair found on right side of middle line
+	double distanceMiddle; //distance between closest pair split by the middle line
+	double minimumDistance; //to hold minimum distance 
+
+	vector <pair<int, int>> dataXleft; //to hold X sorted data on left of middle line
+	vector <pair<int, int>> dataXright; //to hold X sorted data on right of middle line 
+	vector <pair<int, int>> dataYleft; //to hold Y sorted data on left of middle line
+	vector <pair<int, int>> dataYright; //to hold Y sorted data on right of middle line 
+
+
+	if (dataX.size() <= 3)
+	{
+		//brute force solve and return 
+		cout << "time for brute force!\n"; 
+		return bruteForceUtility(dataX); 
+	}
+
+	int middleIndex = (dataX.size() / 2) - 1; //finds the index middle point which defines vertical line 
+
+	for (int i = 0; i < dataX.size(); i++)
+	{
+		if (dataX[i].first <= dataX[middleIndex].first)
+			dataXleft.push_back(dataX[i]); //X sorted points on left side of line 
+		else
+			dataXright.push_back(dataX[i]); //X sorted points on right side of line 
+
+		if (dataY[i].first <= dataX[middleIndex].first)
+			dataYleft.push_back(dataY[i]); //Y sorted points on left side of line
+		else
+			dataYright.push_back(dataY[i]); // Y sorted points on left side of line
+	}
+
+	distanceLeft = recursiveClosest(dataXleft, dataYleft); //recursive call for left side
+	distanceRight = recursiveClosest(dataXright, dataYleft); //recursive call for right side 
+
+
+
+
+
+	return 0; 
+}
+
+double bruteForceUtility (vector <pair<int, int>> data) //utility for recursiveClosest
+{
+	return 1; //test purposes 
+	double minimumDistance = 0; 
+
+	for (int i = 0; i < data.size() - 1; i++)
+	{
+		for (int j = (i + 1); j < data.size(); j++)
+		{
+			if (dist(data[i], data[j]) < minimumDistance)
+			{
+				minimumDistance = dist(data[i], data[j]);
+			}
+		}
+	}
+	return minimumDistance; 
+}
