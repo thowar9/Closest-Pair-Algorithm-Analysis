@@ -232,16 +232,13 @@ double recursiveClosest(vector <pair<int, int>> dataX, vector <pair<int, int>> d
 	distanceLeft = recursiveClosest(dataXleft, dataYleft); //recursive call for left side
 	distanceRight = recursiveClosest(dataXright, dataYleft); //recursive call for right side 
 
+	minimumDistance = findMin(distanceLeft, distanceRight); 
 
-
-
-
-	return 0; 
+	return minimumDistance; 
 }
 
 double bruteForceUtility (vector <pair<int, int>> data) //utility for recursiveClosest
 {
-	return 1; //test purposes 
 	double minimumDistance = 0; 
 
 	for (int i = 0; i < data.size() - 1; i++)
@@ -254,5 +251,6 @@ double bruteForceUtility (vector <pair<int, int>> data) //utility for recursiveC
 			}
 		}
 	}
+	cout << "brute force complete!\n"; 
 	return minimumDistance; 
 }
