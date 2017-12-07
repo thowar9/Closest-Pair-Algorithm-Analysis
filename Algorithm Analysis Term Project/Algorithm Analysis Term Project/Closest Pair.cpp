@@ -27,7 +27,7 @@ int main()
 {
 	int n = 1000; //initial input, also input size counter
 	pair <int, int> tempPair; 
-	const int PLANESIZE = 1000; //plane size ex(100 by 100)
+	const int PLANESIZE = 10000; //plane size ex(100 by 100)
 	const int SKIPBY = 100; 
 	int run = 1; //to keep track of run #
 	int trial = 1; //to keep track of trial # per run
@@ -78,7 +78,6 @@ int main()
 			sort (dataX.begin(), dataX.end()); 
 			sort (dataY.begin(), dataY.end(), sortbysec);
 
-			//divideAndConquer(dataX, dataY, n);
 			recursiveClosest(dataX, dataY); 
 
 			auto end = chrono::steady_clock::now();
@@ -106,6 +105,7 @@ int main()
 	outBruteForce << "Writing brute force trial output to a file:\n"; //write
 	//-------------------------------------------------------------------------------------
 	do { //brute force runs below
+		n = 1000; 
 		trial = 1; 
 		while (trial <= 3) 
 		{
@@ -135,7 +135,6 @@ int main()
 
 			outBruteForce << "Trial " << trial << ": " << toAverage[trial-1] << " "; 
 			trial++;
-
 		}
 
 		average = (toAverage[0] + toAverage[1] + toAverage[2])/3; 
@@ -158,7 +157,10 @@ int main()
 
 double dist(pair<int, int> a, pair<int, int> b)
 {
-	return sqrt((a.first - b.first)*(a.first - b.first) + (a.second - b.second)*(a.second - b.second));
+	int distancex = (a.first - b.first)*(a.first - b.first); 
+	int distancey = (a.second - b.second)*(a.second - b.second); 
+	double distance = sqrt(abs(distancex - distancey)); 
+	return distance; 
 }
 
 
@@ -251,6 +253,6 @@ double bruteForceUtility (vector <pair<int, int>> data) //utility for recursiveC
 			}
 		}
 	}
-	cout << "brute force complete!\n"; 
+	cout << "brute force utility for recursion complete! Minimum distance is " << minimumDistance << endl;
 	return minimumDistance; 
 }
