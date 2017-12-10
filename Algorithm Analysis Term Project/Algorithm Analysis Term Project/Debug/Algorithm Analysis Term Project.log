@@ -1,8 +1,9 @@
 ﻿  Closest Pair.cpp
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(34): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(82): warning C4244: '=': conversion from '__int64' to 'double', possible loss of data
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(198): warning C4018: '<': signed/unsigned mismatch
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(181): warning C4101: 'distanceMiddle': unreferenced local variable
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(230): warning C4018: '<': signed/unsigned mismatch
-c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(232): warning C4018: '<': signed/unsigned mismatch
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(35): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(83): warning C4244: '=': conversion from '__int64' to 'double', possible loss of data
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(126): warning C4018: '<': signed/unsigned mismatch
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(162): warning C4018: '<': signed/unsigned mismatch
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(164): warning C4018: '<': signed/unsigned mismatch
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(180): warning C4018: '<': signed/unsigned mismatch
+c:\users\tucker\documents\github\closest-pair-algorithm-analysis\algorithm analysis term project\algorithm analysis term project\closest pair.cpp(182): warning C4018: '<': signed/unsigned mismatch
   Algorithm Analysis Term Project.vcxproj -> C:\Users\Tucker\Documents\GitHub\Closest-Pair-Algorithm-Analysis\Algorithm Analysis Term Project\Debug\Algorithm Analysis Term Project.exe
