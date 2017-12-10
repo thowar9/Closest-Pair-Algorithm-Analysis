@@ -7,9 +7,7 @@
 #include <vector>
 #include <algorithm>
 
-//to increase heap size
-#pragma comment(linker, "/HEAP:4000000") 
-#pragma comment(linker, "/STACK:6000000")
+//increased stack reserve size to 8MB via properties->configuration properties->linker->system
 
 using namespace std; 
 
@@ -18,16 +16,15 @@ double dist(pair<int, int>, pair<int, int>);
 double recursiveClosest(vector<pair<int, int>>, vector<pair<int, int>>); 
 double bruteForceUtility(vector<pair<int, int>>); 
 double findMin(double, double); 
-double closestInArea(vector <pair<int, int>>, double, int);
 bool sortbysec(const pair<int, int> &, const pair<int, int> &);
 
 const int MAXINPUT = 100000; //max input size
+const int PLANESIZE = 1000; //plane size ex(100 by 100)
 
 int main()
 {
 	int n = 1000; //initial input, also input size counter
 	pair <int, int> tempPair; 
-	const int PLANESIZE = 10000; //plane size ex(100 by 100)
 	const int SKIPBY = 100; 
 	int run = 1; //to keep track of run #
 	int trial = 1; //to keep track of trial # per run
@@ -71,14 +68,14 @@ int main()
 			vector< pair<int, int> > dataY; //create array for sorting by y
 			for (int i = 0; i < n; i++)
 			{
-				dataX.push_back(data[i]); 
-				dataY.push_back(data[i]);
+				dataX.push_back(data.at(i)); 
+				dataY.push_back(data.at(i));
 			}
 
-			sort (dataX.begin(), dataX.end()); 
-			sort (dataY.begin(), dataY.end(), sortbysec);
+			sort (dataX.begin(), dataX.end()); //sort ascending according to X
+			sort (dataY.begin(), dataY.end(), sortbysec); //sort ascending according to Y
 
-			recursiveClosest(dataX, dataY); 
+			recursiveClosest(dataX, dataY); //call recursion
 
 			auto end = chrono::steady_clock::now();
 
@@ -171,25 +168,6 @@ double findMin(double first, double second)
 }
 //to find the distance between closest points in given area
 
-double closestInArea(vector < pair<int, int> > area, double distance, int n)
-{
-	double closestDistance = distance; //set initial closest distance 
-	
-	//brute force Y sorted points to find two closest
-	for (int i = 0; i < n; ++i)
-	{
-		for (int j = i + 1; j < n && (area[j].second - area[i].second) < closestDistance; ++j)
-		{
-			if (dist(area[i], area[j]) < closestDistance)
-			{
-				closestDistance = dist(area[i], area[j]); 
-			}
-		}
-	}
-	return closestDistance; 
-}
-
-
 // utility function to sort the vector elements by second element of pairs
 bool sortbysec(const pair<int, int> &a, const pair<int, int> &b)
 {
@@ -208,11 +186,10 @@ double recursiveClosest(vector <pair<int, int>> dataX, vector <pair<int, int>> d
 	vector <pair<int, int>> dataYleft; //to hold Y sorted data on left of middle line
 	vector <pair<int, int>> dataYright; //to hold Y sorted data on right of middle line 
 
-
 	if (dataX.size() <= 3)
 	{
 		//brute force solve and return 
-		cout << "time for brute force!\n"; 
+		cout << "time for brute force utility. now in conquer phase!\n"; //TEST STATEMENT
 		return bruteForceUtility(dataX); 
 	}
 
@@ -220,39 +197,47 @@ double recursiveClosest(vector <pair<int, int>> dataX, vector <pair<int, int>> d
 
 	for (int i = 0; i < dataX.size(); i++)
 	{
-		if (dataX[i].first <= dataX[middleIndex].first)
-			dataXleft.push_back(dataX[i]); //X sorted points on left side of line 
+		if (dataX.at(i).first <= dataX.at(middleIndex).first)
+			dataXleft.push_back(dataX.at(i)); //X sorted points on left side of line 
 		else
-			dataXright.push_back(dataX[i]); //X sorted points on right side of line 
+			dataXright.push_back(dataX.at(i)); //X sorted points on right side of line 
 
-		if (dataY[i].first <= dataX[middleIndex].first)
-			dataYleft.push_back(dataY[i]); //Y sorted points on left side of line
+		if (dataY.at(i).first <= dataX.at(middleIndex).first)
+			dataYleft.push_back(dataY.at(i)); //Y sorted points on left side of line
 		else
-			dataYright.push_back(dataY[i]); // Y sorted points on left side of line
+			dataYright.push_back(dataY.at(i)); // Y sorted points on left side of line
 	}
 
 	distanceLeft = recursiveClosest(dataXleft, dataYleft); //recursive call for left side
+	cout << "made it through left side\n"; //TEST STATEMENT
+
 	distanceRight = recursiveClosest(dataXright, dataYleft); //recursive call for right side 
+	cout << "made it through right side\n"; //TEST STATEMENT
 
 	minimumDistance = findMin(distanceLeft, distanceRight); 
+
+	//currently ignoring third case where closest point is split by middle line 
+
 
 	return minimumDistance; 
 }
 
 double bruteForceUtility (vector <pair<int, int>> data) //utility for recursiveClosest
 {
-	double minimumDistance = 0; 
-
+	double minimumDistance = sqrt(2 * PLANESIZE*PLANESIZE); //to hold minimum distance for brute force; 
+	double currentDistance = 0; 
+	cout << "start brute force utility--"; //TEST STATEMENT
 	for (int i = 0; i < data.size() - 1; i++)
 	{
-		for (int j = (i + 1); j < data.size(); j++)
+		for (int j = (i + 1); j < data.size() - 1; j++)
 		{
-			if (dist(data[i], data[j]) < minimumDistance)
+			currentDistance = dist(data.at(i), data.at(j));
+			if (currentDistance < minimumDistance)
 			{
-				minimumDistance = dist(data[i], data[j]);
+				minimumDistance = currentDistance;
 			}
 		}
 	}
-	cout << "brute force utility for recursion complete! Minimum distance is " << minimumDistance << endl;
+	cout << "--end brute force utility\n"; //TEST STATEMENT
 	return minimumDistance; 
 }

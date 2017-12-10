@@ -25,10 +25,9 @@ int main()
 	const int SKIPBY = 1000;
 	int run = 1; //to keep track of run #
 	int trial = 1; //to keep track of trial # per run
-	double average = 0;
-	double toAverage[3] = { 0,0,0 };
 	int random = 0; //create the random variable
 	srand(time(NULL)); //seed the random variable
+	double elapsedTime = 0; 
 
 	vector < pair<int, int> > data;
 	pair<int, int> BFdata[MAXINPUT];
@@ -36,14 +35,26 @@ int main()
 	double minimumDistance = sqrt(2 * pow(PLANESIZE, 2)); //to hold minimum distance for brute force 
 
 	//Test file creation
-	ofstream outBruteForce;
-	
+	ofstream outBruteForceT1;
+	ofstream outBruteForceT2;
+	ofstream outBruteForceT3;
 	
 	//ENSURE TEST FILE IS CREATED ON COMPUTER RUNNING FINAL TRIALS
-	outBruteForce.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutput.txt", ios::trunc); //trunc to delete previous test file
-	outBruteForce.close();
-	outBruteForce.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutput.txt", ios::app); //open append mode to add new writes to file
-	outBruteForce << "Writing brute force trial output to a file:\n"; //write
+	outBruteForceT1.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutputT1.txt", ios::trunc); //trunc to delete previous test file
+	outBruteForceT1.close();
+	outBruteForceT1.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutputT1.txt", ios::app); //open append mode to add new writes to file
+	outBruteForceT1 << "Writing brute force trial 1 output to a file:\n"; //write
+
+	outBruteForceT2.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutputT2.txt", ios::trunc); //trunc to delete previous test file
+	outBruteForceT2.close();
+	outBruteForceT2.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutputT2.txt", ios::app); //open append mode to add new writes to file
+	outBruteForceT2 << "Writing brute force trial 2 output to a file:\n"; //write
+
+	outBruteForceT3.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutputT3.txt", ios::trunc); //trunc to delete previous test file
+	outBruteForceT3.close();
+	outBruteForceT3.open("C:\\Users\\YOUR_NAME_HERE\\Documents\\BruteForceOutputT3.txt", ios::app); //open append mode to add new writes to file
+	outBruteForceT3 << "Writing brute force trial 3 output to a file:\n"; //write
+
 	//-------------------------------------------------------------------------------------
 	n = 1000;
 	do { //brute force runs below
@@ -70,19 +81,20 @@ int main()
 				}
 			}
 			auto end = chrono::steady_clock::now();
-			toAverage[trial-1] = chrono::duration_cast<chrono::seconds>(end - start).count();
-			//outBruteForce << "Trial " << trial << ": " << toAverage[trial-1] << " ";
+			elapsedTime = chrono::duration_cast<chrono::seconds>(end - start).count();
+			if (trial == 1) outBruteForceT1 << elapsedTime << endl; 
+			else if (trial == 2) outBruteForceT2 << elapsedTime << endl; 
+			else outBruteForceT3 << elapsedTime << endl; 
 			trial++;
 		}
-		average = (toAverage[0] + toAverage[1] + toAverage[2])/3;
-		outBruteForce << average << endl;
 		n = n + SKIPBY; //incriment input size
 		run++; //incriment run number
 		} while (n < MAXINPUT);
 	//-------------------------------------------------------------------------------------
-	outBruteForce.close();
+	outBruteForceT1.close();
+	outBruteForceT2.close();
+	outBruteForceT3.close(); 
 	
-
 	std::cout << "test complete " << endl; //ADD CORRECT STATEMENT, MOVE TO CORRECT SPOT 
 	std::system("pause");
 
