@@ -1,3 +1,5 @@
+//Tucker Howard
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -43,7 +45,7 @@ int main()
 	ofstream outBruteForce;
 	ofstream outDivConq; 
 
-	//MOVE TO CORRECT SPOT && ENSURE TEST FILE IS CREATED ON COMPUTER RUNNING FINAL TRIALS
+	//ENSURE TEST FILE IS CREATED ON COMPUTER RUNNING FINAL TRIALS
 	outDivConq.open("C:\\Users\\Tucker\\Documents\\DivideAndConquerOutput.txt", ios::trunc); //trunc to delete previous test file 
 	outDivConq.close();
 	outDivConq.open("C:\\Users\\Tucker\\Documents\\DivideAndConquerOutput.txt", ios::app); //open append mode to add new writes to file
@@ -96,7 +98,7 @@ int main()
 	//-------------------------------------------------------------------------------------
 	outDivConq.close(); 
 
-	std::cout << "test complete " << endl; //ADD CORRECT STATEMENT, MOVE TO CORRECT SPOT 
+	std::cout << "test complete " << endl;
 	std::system("pause");
 
 	return 0;
@@ -104,25 +106,25 @@ int main()
 
 double recursiveClosest(vector <pair<int, int>> dataX, vector <pair<int, int>> dataY)
 {	//dataX is pairs sorted by X value, dataY is pairs sorted by Y value 
-	double distanceLeft; //distance between closest pair found on left on middle line
-	double distanceRight; //distance betweenclosest pair found on right side of middle line
-	double distanceMiddle; //distance between closest pair split by the middle line
-	double minimumDistance; //to hold minimum distance 
-
-	vector <pair<int, int>> dataXleft; //to hold X sorted data on left of middle line
-	vector <pair<int, int>> dataXright; //to hold X sorted data on right of middle line 
-	vector <pair<int, int>> dataYleft; //to hold Y sorted data on left of middle line
-	vector <pair<int, int>> dataYright; //to hold Y sorted data on right of middle line 
-
 	if (dataX.size() <= 3)
 	{
 		//brute force solve and return 
 		cout << "time for brute force utility. now in conquer phase!\n"; //TEST STATEMENT
 		return bruteForceUtility(dataX); 
 	}
+	
+	double distanceLeft; //distance between closest pair found on left on middle line
+	double distanceRight; //distance betweenclosest pair found on right side of middle line
+	double distanceMiddle; //distance between closest pair split by the middle line
+	double minimumDistance; //to hold minimum distance 
+	
+	vector <pair<int, int>> dataXleft; //to hold X sorted data on left of middle line
+	vector <pair<int, int>> dataXright; //to hold X sorted data on right of middle line 
+	vector <pair<int, int>> dataYleft; //to hold Y sorted data on left of middle line
+	vector <pair<int, int>> dataYright; //to hold Y sorted data on right of middle line 
 
 	int middleIndex = (dataX.size() / 2) - 1; //finds the index middle point which defines vertical line 
-
+	
 	for (int i = 0; i < dataX.size(); i++)
 	{
 		if (dataX.at(i).first <= dataX.at(middleIndex).first)
@@ -192,6 +194,7 @@ double bruteForceUtility (vector <pair<int, int>> data) //utility for recursiveC
 	return minimumDistance; 
 }
 
+//to find the distance between two points 
 double dist(pair<int, int> a, pair<int, int> b)
 {
 	int distancex = (a.first - b.first)*(a.first - b.first);
